@@ -16,7 +16,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <javapoet.version>1.6.1</javapoet.version>
         <junit.version>4.12</junit.version>
+        <reflections.version>0.9.10</reflections.version>
 
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
     </properties>
@@ -25,17 +27,22 @@
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
-            <version>1.6.1</version>
+            <version>${javapoet.version}</version>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.10</version>
+            <version>${reflections.version}</version>
         </dependency>
         <dependency>
             <groupId>no.bouvet</groupId>
             <artifactId>json-client</artifactId>
             <version>1.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.23.1</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
