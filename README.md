@@ -1,0 +1,1 @@
+# rest-codegen-maven-plugin
