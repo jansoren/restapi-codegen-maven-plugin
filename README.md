@@ -38,3 +38,10 @@ Enjoy :-)
 ## Example of generating ReactJS code
 
 Not implemented yet
+
+## How to get started developing
+
+1. Clone this repo `git clone git@github.com:jansoren/restapi-codegen-maven-plugin.git`
+1. Run `mvn clean install` in the 'restapi-codegen-maven-plugin'-folder
+1. The unit tests have now generated some example code at [/src/test/java/com/example/helloworld/MyService.java](https://github.com/jansoren/restapi-codegen-maven-plugin/blob/master/src/test/java/com/example/helloworld/MyService.java)
+
