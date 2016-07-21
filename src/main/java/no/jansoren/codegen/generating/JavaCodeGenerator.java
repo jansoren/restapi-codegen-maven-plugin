@@ -6,7 +6,6 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 import no.jansoren.codegen.scanning.ScannedClass;
 import no.jansoren.codegen.scanning.ScannedMethod;
-import no.bouvet.jsonclient.JsonClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +15,12 @@ import java.util.Comparator;
 import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.ws.rs.HttpMethod;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 public class JavaCodeGenerator {
 
@@ -23,10 +28,11 @@ public class JavaCodeGenerator {
         for (ScannedClass scannedClass : scannedClasses) {
 
             TypeSpec serviceClass = TypeSpec.classBuilder(scannedClass.getName().replaceAll("Resource", "").concat("Service"))
-                .addField(createJsonClientField())
-                .addModifiers(Modifier.PUBLIC)
-                .addMethods(createMethodSpecList(scannedClass.getScannedMethods()))
-                .build();
+                    .addField(createWebTargetField())
+                    .addMethod(createConstructor())
+                    .addModifiers(Modifier.PUBLIC)
+                    .addMethods(createMethodSpecList(scannedClass.getScannedMethods()))
+                    .build();
 
             JavaFile javaFile = JavaFile.builder(generatedCodePackage, serviceClass).build();
 
@@ -38,11 +44,18 @@ public class JavaCodeGenerator {
         }
     }
 
-    private static FieldSpec createJsonClientField() {
-        return FieldSpec.builder(JsonClient.class, "jsonClient")
-                    .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
-                    .initializer("new $T()", JsonClient.class)
-                    .build();
+    private static FieldSpec createWebTargetField() {
+        return FieldSpec.builder(WebTarget.class, "target")
+                .addModifiers(Modifier.PRIVATE)
+                .build();
+    }
+
+    private static MethodSpec createConstructor() {
+        return MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("$T client = $T.newClient()", Client.class, ClientBuilder.class)
+                .addStatement("target = client.target(\"http://localhost:8080\").path(\"something\")")
+                .build();
     }
 
     private static List<MethodSpec> createMethodSpecList(List<ScannedMethod> scannedMethods) {
@@ -60,30 +73,34 @@ public class JavaCodeGenerator {
     private static MethodSpec createMethodSpec(ScannedMethod scannedMethod) {
         if(HttpMethod.GET.equals(scannedMethod.getMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
-                .returns(scannedMethod.getClassToReturn())
-                .addStatement("return jsonClient.http().get($S).object($T.class)", scannedMethod.getUrl(), scannedMethod.getClassToReturn())
-                .addModifiers(Modifier.PUBLIC)
-                .build();
+                    .returns(scannedMethod.getClassToReturn())
+                    .addStatement("$T response = target.path(\"get\").request($T.APPLICATION_JSON_TYPE).get()", Response.class, MediaType.class)
+                    .addStatement("return ($T)response.getEntity()", scannedMethod.getClassToReturn())
+                    .addModifiers(Modifier.PUBLIC)
+                    .build();
         } else if(HttpMethod.POST.equals(scannedMethod.getMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
-                .addParameter(scannedMethod.getClassToPost(), "dataToPost")
-                .returns(scannedMethod.getClassToReturn())
-                .addStatement("return jsonClient.http().post($S, dataToPost).object($T.class)", scannedMethod.getUrl(), scannedMethod.getClassToReturn())
-                .addModifiers(Modifier.PUBLIC)
-                .build();
+                    .addParameter(scannedMethod.getClassToPost(), "dataToPost")
+                    .returns(scannedMethod.getClassToReturn())
+                    .addStatement("$T response = target.path(\"add\").request($T.APPLICATION_JSON_TYPE).post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
+                    .addStatement("return ($T)response.getEntity()", scannedMethod.getClassToReturn())
+                    .addModifiers(Modifier.PUBLIC)
+                    .build();
         } else if(HttpMethod.PUT.equals(scannedMethod.getMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
-                .addParameter(scannedMethod.getClassToPost(), "dataToPost")
-                .returns(scannedMethod.getClassToReturn())
-                .addStatement("return jsonClient.http().put($S, dataToPost).object($T.class)", scannedMethod.getUrl(), scannedMethod.getClassToReturn())
-                .addModifiers(Modifier.PUBLIC)
-                .build();
+                    .addParameter(scannedMethod.getClassToPost(), "dataToPut")
+                    .returns(scannedMethod.getClassToReturn())
+                    .addStatement("$T response = target.path(\"update\").request($T.APPLICATION_JSON_TYPE).put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
+                    .addStatement("return ($T)response.getEntity()", scannedMethod.getClassToReturn())
+                    .addModifiers(Modifier.PUBLIC)
+                    .build();
         } else if(HttpMethod.DELETE.equals(scannedMethod.getMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
-                .returns(scannedMethod.getClassToReturn())
-                .addStatement("return jsonClient.http().delete($S).object($T.class)", scannedMethod.getUrl(), scannedMethod.getClassToReturn())
-                .addModifiers(Modifier.PUBLIC)
-                .build();
+                    .returns(scannedMethod.getClassToReturn())
+                    .addStatement("$T response = target.path(\"delete\").request($T.APPLICATION_JSON_TYPE).delete()", Response.class, MediaType.class)
+                    .addStatement("return ($T)response.getEntity()", Void.class)
+                    .addModifiers(Modifier.PUBLIC)
+                    .build();
         } else {
             return null;
         }
