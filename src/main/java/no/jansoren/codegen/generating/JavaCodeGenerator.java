@@ -24,12 +24,12 @@ import javax.ws.rs.core.Response;
 
 public class JavaCodeGenerator {
 
-    public static void generate(List<ScannedClass> scannedClasses, String generatedCodeFolder, String generatedCodePackage) {
+    public static void generate(List<ScannedClass> scannedClasses, String generatedCodeFolder, String generatedCodePackage, String rootHost) {
         for (ScannedClass scannedClass : scannedClasses) {
 
             TypeSpec serviceClass = TypeSpec.classBuilder(scannedClass.getName().replaceAll("Resource", "").concat("Service"))
                     .addField(createWebTargetField())
-                    .addMethod(createConstructor())
+                    .addMethod(createConstructor(rootHost, scannedClass.getPath()))
                     .addModifiers(Modifier.PUBLIC)
                     .addMethods(createMethodSpecList(scannedClass.getScannedMethods()))
                     .build();
@@ -50,11 +50,11 @@ public class JavaCodeGenerator {
                 .build();
     }
 
-    private static MethodSpec createConstructor() {
+    private static MethodSpec createConstructor(String rootHost, String path) {
         return MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("$T client = $T.newClient()", Client.class, ClientBuilder.class)
-                .addStatement("target = client.target(\"http://localhost:8080\").path(\"something\")")
+                .addStatement("target = client.target($S).path($S)", rootHost, path)
                 .build();
     }
 
@@ -74,7 +74,7 @@ public class JavaCodeGenerator {
         if(HttpMethod.GET.equals(scannedMethod.getMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path(\"get\").request($T.APPLICATION_JSON_TYPE).get()", Response.class, MediaType.class)
+                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).get()", Response.class, scannedMethod.getPath(), MediaType.class)
                     .addStatement("return ($T)response.getEntity()", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
@@ -82,7 +82,7 @@ public class JavaCodeGenerator {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .addParameter(scannedMethod.getClassToPost(), "dataToPost")
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path(\"add\").request($T.APPLICATION_JSON_TYPE).post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
+                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, scannedMethod.getPath(), MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return ($T)response.getEntity()", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
@@ -90,14 +90,14 @@ public class JavaCodeGenerator {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .addParameter(scannedMethod.getClassToPost(), "dataToPut")
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path(\"update\").request($T.APPLICATION_JSON_TYPE).put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
+                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, scannedMethod.getPath(), MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return ($T)response.getEntity()", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
         } else if(HttpMethod.DELETE.equals(scannedMethod.getMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path(\"delete\").request($T.APPLICATION_JSON_TYPE).delete()", Response.class, MediaType.class)
+                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).delete()", Response.class, scannedMethod.getPath(), MediaType.class)
                     .addStatement("return ($T)response.getEntity()", Void.class)
                     .addModifiers(Modifier.PUBLIC)
                     .build();

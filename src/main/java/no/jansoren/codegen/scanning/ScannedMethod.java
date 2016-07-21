@@ -4,7 +4,7 @@ public class ScannedMethod {
 
     private String name;
     private String method;
-    private String url;
+    private String path;
     private Class classToReturn;
     private Class classToPost;
 
@@ -24,12 +24,12 @@ public class ScannedMethod {
         this.method = method;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPath() {
+        return path;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Class getClassToReturn() {
@@ -51,9 +51,11 @@ public class ScannedMethod {
     @Override
     public String toString() {
         return "ScannedMethod{" +
-            "name='" + name + '\'' +
-            ", method='" + method + '\'' +
-            ", url='" + url + '\'' +
-            '}';
+                "name='" + name + '\'' +
+                ", method='" + method + '\'' +
+                ", path='" + path + '\'' +
+                ", classToReturn=" + classToReturn +
+                ", classToPost=" + classToPost +
+                '}';
     }
 }

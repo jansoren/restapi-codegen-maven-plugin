@@ -17,7 +17,8 @@ public class JavaCodeGeneratorTest {
         String generatedCodeFolder = "src/test/java";
         String generatedCodePackage = "com.example.helloworld";
         List<ScannedClass> scannedClasses = createScannedClasses();
-        JavaCodeGenerator.generate(scannedClasses, generatedCodeFolder, generatedCodePackage);
+        String rootHost = "https://localhost:1234";
+        JavaCodeGenerator.generate(scannedClasses, generatedCodeFolder, generatedCodePackage, rootHost);
     }
 
     private List<ScannedClass> createScannedClasses() {
@@ -39,6 +40,7 @@ public class JavaCodeGeneratorTest {
     private ScannedClass createScannedClass() {
         ScannedClass scannedClass = new ScannedClass();
         scannedClass.setName("MyResource");
+        scannedClass.setPath("something");
         scannedClass.setScannedMethods(createScannedMethods());
         return scannedClass;
     }
@@ -47,7 +49,7 @@ public class JavaCodeGeneratorTest {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName("getSomething");
         scannedMethod.setMethod(HttpMethod.GET);
-        scannedMethod.setUrl("http://localhost:8080/something/get");
+        scannedMethod.setPath("get");
         scannedMethod.setClassToReturn(Something.class);
         return scannedMethod;
     }
@@ -56,7 +58,7 @@ public class JavaCodeGeneratorTest {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName("addSomething");
         scannedMethod.setMethod(HttpMethod.POST);
-        scannedMethod.setUrl("http://localhost:8080/something/add");
+        scannedMethod.setPath("add");
         scannedMethod.setClassToReturn(Something.class);
         scannedMethod.setClassToPost(Something.class);
         return scannedMethod;
@@ -66,7 +68,7 @@ public class JavaCodeGeneratorTest {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName("putSomething");
         scannedMethod.setMethod(HttpMethod.PUT);
-        scannedMethod.setUrl("http://localhost:8080/something/put");
+        scannedMethod.setPath("put");
         scannedMethod.setClassToReturn(Something.class);
         scannedMethod.setClassToPost(Something.class);
         return scannedMethod;
@@ -76,7 +78,7 @@ public class JavaCodeGeneratorTest {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName("deleteSomething");
         scannedMethod.setMethod(HttpMethod.DELETE);
-        scannedMethod.setUrl("http://localhost:8080/something/delete");
+        scannedMethod.setPath("delete");
         scannedMethod.setClassToReturn(Void.class);
         return scannedMethod;
     }
@@ -85,7 +87,7 @@ public class JavaCodeGeneratorTest {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName("headSomething");
         scannedMethod.setMethod(HttpMethod.HEAD);
-        scannedMethod.setUrl("http://localhost:8080/something/head");
+        scannedMethod.setPath("head");
         scannedMethod.setClassToReturn(Void.class);
         return scannedMethod;
     }

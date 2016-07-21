@@ -38,14 +38,14 @@ public class CodegenMojo extends AbstractMojo {
 
         ResourcesScanner scanner = new ResourcesScanner(getLog(), mavenProject);
 
-        List<ScannedClass> scannedClasses = scanner.scan(packageToScan, rootHost);
+        List<ScannedClass> scannedClasses = scanner.scan(packageToScan);
         for(ScannedClass scannedClass : scannedClasses) {
             getLog().info("Class that is scanned: " + scannedClass);
         }
 
         getLog().info("Generated code folder" + new File(generatedCodeFolder).getAbsolutePath());
 
-        JavaCodeGenerator.generate(scannedClasses, generatedCodeFolder, generatedCodePackage);
+        JavaCodeGenerator.generate(scannedClasses, generatedCodeFolder, generatedCodePackage, rootHost);
     }
 
 }

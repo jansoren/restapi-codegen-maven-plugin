@@ -6,6 +6,7 @@ import java.util.List;
 public class ScannedClass {
 
     private String name;
+    private String path;
     private List<ScannedMethod> scannedMethods = new ArrayList<>();
 
     public String getName() {
@@ -14,6 +15,14 @@ public class ScannedClass {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public List<ScannedMethod> getScannedMethods() {
@@ -27,8 +36,9 @@ public class ScannedClass {
     @Override
     public String toString() {
         return "ScannedClass{" +
-            "name='" + name + '\'' +
-            ", scannedMethods=" + scannedMethods +
-            '}';
+                "name='" + name + '\'' +
+                ", path='" + path + '\'' +
+                ", scannedMethods=" + scannedMethods +
+                '}';
     }
 }

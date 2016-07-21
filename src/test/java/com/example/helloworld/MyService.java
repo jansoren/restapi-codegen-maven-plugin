@@ -14,7 +14,7 @@ public class MyService {
 
   public MyService() {
     Client client = ClientBuilder.newClient();
-    target = client.target("http://localhost:8080").path("something");
+    target = client.target("https://localhost:1234").path("something");
   }
 
   public Something addSomething(Something dataToPost) {
@@ -33,7 +33,7 @@ public class MyService {
   }
 
   public Something putSomething(Something dataToPut) {
-    Response response = target.path("update").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(dataToPut, MediaType.APPLICATION_JSON_TYPE));
+    Response response = target.path("put").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(dataToPut, MediaType.APPLICATION_JSON_TYPE));
     return (Something)response.getEntity();
   }
 }

@@ -26,14 +26,14 @@ public class ResourcesScanner {
         this.mavenProject = mavenProject;
     }
 
-    public List<ScannedClass> scan(String packageToScan, String rootHost) throws MojoExecutionException {
+    public List<ScannedClass> scan(String packageToScan) throws MojoExecutionException {
         ConfigurationBuilder configuration = createConfiguration();
 
         Reflections reflections = new Reflections(configuration);
 
         List<ScannedClass> scannedClasses = new ArrayList<>();
         for(Class<?> scannedResourceClass : reflections.getTypesAnnotatedWith(javax.ws.rs.Path.class)) {
-            scannedClasses.add(createScannedClass(rootHost, scannedResourceClass));
+            scannedClasses.add(createScannedClass(scannedResourceClass));
         }
         return scannedClasses;
     }
@@ -87,26 +87,27 @@ public class ResourcesScanner {
         return mavenProject.getBuild().getOutputDirectory();
     }
 
-    private static ScannedClass createScannedClass(String rootHost, Class<?> scannedResourceClass) {
+    private static ScannedClass createScannedClass(Class<?> scannedResourceClass) {
         ScannedClass scannedClass = new ScannedClass();
         scannedClass.setName(scannedResourceClass.getSimpleName());
-        scannedClass.setScannedMethods(scanMethods(rootHost, scannedResourceClass));
+        scannedClass.setPath(getClassPath(scannedResourceClass));
+        scannedClass.setScannedMethods(scanMethods(scannedResourceClass));
         return scannedClass;
     }
 
-    private static List<ScannedMethod> scanMethods(String rootHost, Class<?> scannedResourceClass) {
+    private static List<ScannedMethod> scanMethods(Class<?> scannedResourceClass) {
         List<ScannedMethod> scannedMethods = new ArrayList<>();
         for(Method scannedMethod : scannedResourceClass.getDeclaredMethods()) {
-            scannedMethods.add(createScannedMethod(scannedResourceClass, scannedMethod, rootHost));
+            scannedMethods.add(createScannedMethod(scannedResourceClass, scannedMethod));
         }
         return scannedMethods;
     }
 
-    private static ScannedMethod createScannedMethod(Class<?> resourceClass, Method method, String rootHost) {
+    private static ScannedMethod createScannedMethod(Class<?> resourceClass, Method method) {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName(method.getName());
         scannedMethod.setMethod(getHttpMethod(method));
-        scannedMethod.setUrl(rootHost + getClassPath(resourceClass) + getMethodPath(method));
+        scannedMethod.setPath(getMethodPath(method));
         scannedMethod.setClassToReturn(method.getReturnType());
         scannedMethod.setClassToPost(getClassToPost(method));
         return scannedMethod;
