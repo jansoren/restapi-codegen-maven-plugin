@@ -3,16 +3,21 @@
 Are you sick of always having to implement and maintain the client-side services for reaching your Rest API.
 With the REST API Codegenerator Maven Plugin you are able to automatically generate the client-side code to reach your API.
 
-For now the plugin generates java code as a proof of concept - see [example of usage](https://github.com/jansoren/akka-persistence-java-example), but feel free to create pull requests and extend the plugin to generate for example Ajax, AngularJS or ReactJS code.
+For now the plugin generates java code as a proof of concept - see example of usage in the [akka-persistence-java-example](https://github.com/jansoren/akka-persistence-java-example)-project.
 
-## Example of generating Java code
+If you find the plugin useful please give it a star. Also feel free to create pull requests and extend the plugin to generate for example Ajax, AngularJS or ReactJS code.
+
+## How to use the plugin for generating Java code
+
+1. Add the plugin to your `pom.xml` file, see example below.
+1. Run `mvn clean install` in your project folder
+1. The plugin will scan your source code and generate code out of your resource classes.
+
+### Plugin example
 
 - `generatedCodeFolder`: This is the folder where you want your generated code
 - `generatedCodePackage`: This is the package of your generated class files
 - `rootHost`: This is the host of your running application
-
-Add the plugin to your `pom.xml` file and run `mvn clean install`. The plugin will scan your source code and generate code out of your resource classes.
-Enjoy :-)
 
 ```maven
 <plugin>
@@ -37,20 +42,20 @@ Enjoy :-)
 
 ### Dependencies required
 ```maven
-    <dependency>
-        <groupId>org.glassfish.jersey.core</groupId>
-        <artifactId>jersey-client</artifactId>
-        <version>2.23.1</version>
-    </dependency>
+<dependency>
+    <groupId>org.glassfish.jersey.core</groupId>
+    <artifactId>jersey-client</artifactId>
+    <version>2.23.1</version>
+</dependency>
 ```
 
-If you are using `MediaType.APPLICATION_JSON_TYPE` you need this dependency
+If you are using `MediaType.APPLICATION_JSON_TYPE` you also need this dependency
 ```maven
-    <dependency>
-        <groupId>org.glassfish.jersey.media</groupId>
-        <artifactId>jersey-media-json-jackson</artifactId>
-        <version>2.13</version>
-    </dependency>
+<dependency>
+    <groupId>org.glassfish.jersey.media</groupId>
+    <artifactId>jersey-media-json-jackson</artifactId>
+    <version>2.13</version>
+</dependency>
 ```
 
 ## Example of generating ReactJS code
@@ -60,10 +65,15 @@ Not implemented yet
 ## How to get started developing
 
 1. Clone this repo `git clone git@github.com:jansoren/restapi-codegen-maven-plugin.git`
-1. Run `mvn clean install` in the 'restapi-codegen-maven-plugin'-folder
+1. Run `mvn clean install` in the `restapi-codegen-maven-plugin`-folder
 1. The unit tests have now generated some example code at [/src/test/java/com/example/helloworld/MyService.java](https://github.com/jansoren/restapi-codegen-maven-plugin/blob/master/src/test/java/com/example/helloworld/MyService.java)
 
 ## Why this plugin
 
-Over the years I have created a few REST API's and always end up using alot of time implementing the client side code to reach the API's.
-After working on an API with a quality test project that continously tested the API we used alot of time also creating java code to reach the API......
+Over the years I have created a few REST API's, and I always end up using alot of time implementing the client-side code for reaching the API's.
+In one of the projects we had a Quality-test application implemented in java that ran tests continuously, something that required updating the client-side code rapidly.
+With this challenge we ended up creating alot of the same boilerplate code for each new service to reach the API, and I felt that this code should and could be automaticly generated.
+
+In the pursuit of finding such a product I ended up creating a proof of concept of this myself, at least to resolve my current need.
+
+I hope this can be useful for others as well.
