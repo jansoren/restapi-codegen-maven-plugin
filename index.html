@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Restapi-codegen-maven-plugin : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Restapi-codegen-maven-plugin</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/jansoren/restapi-codegen-maven-plugin">View on GitHub</a>
+
+          <h1 id="project_title">Restapi-codegen-maven-plugin</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/jansoren/restapi-codegen-maven-plugin/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/jansoren/restapi-codegen-maven-plugin/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="rest-api-codegenerator-maven-plugin" class="anchor" href="#rest-api-codegenerator-maven-plugin" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>REST API Codegenerator Maven Plugin</h1>
+
+<p>Are you sick of always having to implement and maintain the client-side services for reaching your Rest API.
+With the REST API Codegenerator Maven Plugin you are able to automatically generate the client-side code to reach your API.</p>
+
+<p>For now the plugin generates java code as a proof of concept - see example of usage in the <a href="https://github.com/jansoren/akka-persistence-java-example">akka-persistence-java-example</a>-project.</p>
+
+<p>If you find the plugin useful please give it a star. Also feel free to create pull requests and extend the plugin to generate for example Ajax, AngularJS or ReactJS code.</p>
+
+<h2>
+<a id="how-to-use-the-plugin-for-generating-java-code" class="anchor" href="#how-to-use-the-plugin-for-generating-java-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to use the plugin for generating Java code</h2>
+
+<ol>
+<li>Add the plugin to your <code>pom.xml</code> file, see example below.</li>
+<li>Run <code>mvn clean install</code> in your project folder</li>
+<li>The plugin will scan your source code and generate code out of your resource classes.</li>
+</ol>
+
+<h3>
+<a id="plugin-example" class="anchor" href="#plugin-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plugin example</h3>
+
+<ul>
+<li>
+<code>generatedCodeFolder</code>: This is the folder where you want your generated code</li>
+<li>
+<code>generatedCodePackage</code>: This is the package of your generated class files</li>
+<li>
+<code>rootHost</code>: This is the host of your running application</li>
+</ul>
+
+<pre lang="maven"><code>&lt;plugin&gt;
+    &lt;groupId&gt;no.jansoren&lt;/groupId&gt;
+    &lt;artifactId&gt;restapi-codegen-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;generatedCodeFolder&gt;../server-qtest/src/main/java&lt;/generatedCodeFolder&gt;
+        &lt;generatedCodePackage&gt;com.example.qtest.services&lt;/generatedCodePackage&gt;
+        &lt;rootHost&gt;http://localhost:8080&lt;/rootHost&gt;
+    &lt;/configuration&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;phase&gt;compile&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;codegen&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<h3>
+<a id="dependencies-required" class="anchor" href="#dependencies-required" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies required</h3>
+
+<pre lang="maven"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.glassfish.jersey.core&lt;/groupId&gt;
+    &lt;artifactId&gt;jersey-client&lt;/artifactId&gt;
+    &lt;version&gt;2.23.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>If you are using <code>MediaType.APPLICATION_JSON_TYPE</code> you also need this dependency</p>
+
+<pre lang="maven"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
+    &lt;artifactId&gt;jersey-media-json-jackson&lt;/artifactId&gt;
+    &lt;version&gt;2.13&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<h2>
+<a id="example-of-generating-reactjs-code" class="anchor" href="#example-of-generating-reactjs-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example of generating ReactJS code</h2>
+
+<p>Not implemented yet</p>
+
+<h2>
+<a id="how-to-get-started-developing" class="anchor" href="#how-to-get-started-developing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to get started developing</h2>
+
+<ol>
+<li>Clone this repo <code>git clone git@github.com:jansoren/restapi-codegen-maven-plugin.git</code>
+</li>
+<li>Run <code>mvn clean install</code> in the <code>restapi-codegen-maven-plugin</code>-folder</li>
+<li>The unit tests have now generated some example code at <a href="https://github.com/jansoren/restapi-codegen-maven-plugin/blob/master/src/test/java/com/example/helloworld/MyService.java">/src/test/java/com/example/helloworld/MyService.java</a>
+</li>
+</ol>
+
+<h2>
+<a id="why-this-plugin" class="anchor" href="#why-this-plugin" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why this plugin</h2>
+
+<p>Over the years I have created a few REST API's, and I always end up using alot of time implementing the client-side code for reaching the API's.
+In one of the projects we had a Quality-test application implemented in java that ran tests continuously, something that required updating the client-side code rapidly.
+With this challenge we ended up creating alot of the same boilerplate code for each new service to reach the API, and I felt that this code should and could be automaticly generated.</p>
+
+<p>In the pursuit of finding such a product I ended up creating a proof of concept of this myself, at least to resolve my current need.</p>
+
+<p>I hope this can be useful for others as well.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Restapi-codegen-maven-plugin maintained by <a href="https://github.com/jansoren">jansoren</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
