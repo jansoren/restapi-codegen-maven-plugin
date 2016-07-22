@@ -26,7 +26,7 @@ public class ResourcesScanner {
         this.mavenProject = mavenProject;
     }
 
-    public List<ScannedClass> scan(String packageToScan) throws MojoExecutionException {
+    public List<ScannedClass> scan() throws MojoExecutionException {
         ConfigurationBuilder configuration = createConfiguration();
 
         Reflections reflections = new Reflections(configuration);

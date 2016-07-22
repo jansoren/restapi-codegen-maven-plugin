@@ -19,9 +19,6 @@ public class CodegenMojo extends AbstractMojo {
     @Parameter( defaultValue = "${project}", readonly = true )
     private MavenProject mavenProject;
 
-    @Parameter(property = "packageToScan", required = true)
-    private String packageToScan;
-
     @Parameter( property = "generatedCodeFolder", defaultValue = "generated-code" )
     private String generatedCodeFolder;
 
@@ -34,11 +31,10 @@ public class CodegenMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Generating code - " + generatedCodeFolder);
-        getLog().info("Scan package - " + packageToScan);
 
         ResourcesScanner scanner = new ResourcesScanner(getLog(), mavenProject);
 
-        List<ScannedClass> scannedClasses = scanner.scan(packageToScan);
+        List<ScannedClass> scannedClasses = scanner.scan();
         for(ScannedClass scannedClass : scannedClasses) {
             getLog().info("Class that is scanned: " + scannedClass);
         }

@@ -12,7 +12,7 @@ public class ResourcesScannerTest {
     public void testScan() throws MojoExecutionException {
         ResourcesScanner scanner = new ResourcesScanner(null, null);
 
-        List<ScannedClass> scannedClasses = scanner.scan("no.jansoren");
+        List<ScannedClass> scannedClasses = scanner.scan();
         for(ScannedClass scannedClass : scannedClasses) {
             System.out.println(scannedClass.toString());
             assertNotNull(scannedClass.getName());
