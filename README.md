@@ -45,3 +45,7 @@ Not implemented yet
 1. Run `mvn clean install` in the 'restapi-codegen-maven-plugin'-folder
 1. The unit tests have now generated some example code at [/src/test/java/com/example/helloworld/MyService.java](https://github.com/jansoren/restapi-codegen-maven-plugin/blob/master/src/test/java/com/example/helloworld/MyService.java)
 
+## Why this plugin
+
+Over the years I have created a few REST API's and always end up using alot of time implementing the client side code to reach the API's.
+After working on an API with a quality test project that continously tested the API we used alot of time also creating java code to reach the API......
