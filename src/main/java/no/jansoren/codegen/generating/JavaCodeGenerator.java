@@ -75,7 +75,7 @@ public class JavaCodeGenerator {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).get()", Response.class, scannedMethod.getPath(), MediaType.class)
-                    .addStatement("return response.readEntity($T)", scannedMethod.getClassToReturn())
+                    .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
         } else if(HttpMethod.POST.equals(scannedMethod.getMethod())) {
@@ -83,7 +83,7 @@ public class JavaCodeGenerator {
                     .addParameter(scannedMethod.getClassToPost(), "dataToPost")
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, scannedMethod.getPath(), MediaType.class, Entity.class, MediaType.class)
-                    .addStatement("return response.readEntity($T)", scannedMethod.getClassToReturn())
+                    .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
         } else if(HttpMethod.PUT.equals(scannedMethod.getMethod())) {
@@ -91,14 +91,14 @@ public class JavaCodeGenerator {
                     .addParameter(scannedMethod.getClassToPost(), "dataToPut")
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, scannedMethod.getPath(), MediaType.class, Entity.class, MediaType.class)
-                    .addStatement("return response.readEntity($T)", scannedMethod.getClassToReturn())
+                    .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
         } else if(HttpMethod.DELETE.equals(scannedMethod.getMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).delete()", Response.class, scannedMethod.getPath(), MediaType.class)
-                    .addStatement("return response.readEntity($T)", Void.class)
+                    .addStatement("return response.readEntity($T.class)", Void.class)
                     .addModifiers(Modifier.PUBLIC)
                     .build();
         } else {

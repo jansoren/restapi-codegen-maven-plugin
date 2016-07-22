@@ -19,21 +19,21 @@ public class MyService {
 
   public Something addSomething(Something dataToPost) {
     Response response = target.path("add").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(dataToPost, MediaType.APPLICATION_JSON_TYPE));
-    return response.readEntity(Something);
+    return response.readEntity(Something.class);
   }
 
   public Void deleteSomething() {
     Response response = target.path("delete").request(MediaType.APPLICATION_JSON_TYPE).delete();
-    return response.readEntity(Void);
+    return response.readEntity(Void.class);
   }
 
   public Something getSomething() {
     Response response = target.path("get").request(MediaType.APPLICATION_JSON_TYPE).get();
-    return response.readEntity(Something);
+    return response.readEntity(Something.class);
   }
 
   public Something putSomething(Something dataToPut) {
     Response response = target.path("put").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(dataToPut, MediaType.APPLICATION_JSON_TYPE));
-    return response.readEntity(Something);
+    return response.readEntity(Something.class);
   }
 }
