@@ -14,7 +14,7 @@ For now the plugin generates java code as a proof of concept - see [example of u
 Add the plugin to your `pom.xml` file and run `mvn clean install`. The plugin will scan your source code and generate code out of your resource classes.
 Enjoy :-)
 
-```
+```maven
 <plugin>
     <groupId>no.jansoren</groupId>
     <artifactId>restapi-codegen-maven-plugin</artifactId>
@@ -33,6 +33,24 @@ Enjoy :-)
         </execution>
     </executions>
 </plugin>
+```
+
+### Dependencies required
+```maven
+    <dependency>
+        <groupId>org.glassfish.jersey.core</groupId>
+        <artifactId>jersey-client</artifactId>
+        <version>2.23.1</version>
+    </dependency>
+```
+
+If you are using `MediaType.APPLICATION_JSON_TYPE` you need this dependency
+```maven
+    <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-json-jackson</artifactId>
+        <version>2.13</version>
+    </dependency>
 ```
 
 ## Example of generating ReactJS code
