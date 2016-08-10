@@ -45,7 +45,7 @@ If you find the plugin useful please give it a star. Also feel free to create pu
 <dependency>
     <groupId>org.glassfish.jersey.core</groupId>
     <artifactId>jersey-client</artifactId>
-    <version>2.23.1</version>
+    <version>2.23.2</version>
 </dependency>
 ```
 
@@ -54,7 +54,7 @@ If you are using `MediaType.APPLICATION_JSON_TYPE` you also need this dependency
 <dependency>
     <groupId>org.glassfish.jersey.media</groupId>
     <artifactId>jersey-media-json-jackson</artifactId>
-    <version>2.13</version>
+    <version>2.13.2</version>
 </dependency>
 ```
 
