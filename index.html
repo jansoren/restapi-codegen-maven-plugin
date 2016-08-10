@@ -9,16 +9,6 @@
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
     <title>Restapi-codegen-maven-plugin</title>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-73302845-3', 'auto');
-  ga('send', 'pageview');
-
-</script>
   </head>
 
   <body>
@@ -47,7 +37,7 @@
 <p>Are you sick of always having to implement and maintain the client-side services for reaching your Rest API.
 With the REST API Codegenerator Maven Plugin you are able to automatically generate the client-side code to reach your API.</p>
 
-<p>For now the plugin generates java code as a proof of concept - see example of usage in the <a href="https://github.com/jansoren/akka-persistence-java-example">akka-persistence-java-example</a>-project.</p>
+<p>For now the plugin scans your code for <a href="https://jersey.java.net/">Jersey</a> resources and generates java code - see example of usage in the <a href="https://github.com/jansoren/akka-persistence-java-example">akka-persistence-java-example</a>-project. In my next project I will extend the plugin to generate ReactJS code aswell.</p>
 
 <p>If you find the plugin useful please give it a star. Also feel free to create pull requests and extend the plugin to generate for example Ajax, AngularJS or ReactJS code.</p>
 
@@ -98,7 +88,7 @@ With the REST API Codegenerator Maven Plugin you are able to automatically gener
 <pre lang="maven"><code>&lt;dependency&gt;
     &lt;groupId&gt;org.glassfish.jersey.core&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-client&lt;/artifactId&gt;
-    &lt;version&gt;2.23.1&lt;/version&gt;
+    &lt;version&gt;2.23.2&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
 
@@ -107,7 +97,7 @@ With the REST API Codegenerator Maven Plugin you are able to automatically gener
 <pre lang="maven"><code>&lt;dependency&gt;
     &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-media-json-jackson&lt;/artifactId&gt;
-    &lt;version&gt;2.13&lt;/version&gt;
+    &lt;version&gt;2.13.2&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre>
 
@@ -134,7 +124,7 @@ With the REST API Codegenerator Maven Plugin you are able to automatically gener
 In one of the projects we had a Quality-test application implemented in java that ran tests continuously, something that required updating the client-side code rapidly.
 With this challenge we ended up creating alot of the same boilerplate code for each new service to reach the API, and I felt that this code should and could be automaticly generated.</p>
 
-<p>In the pursuit of finding such a product I ended up creating a proof of concept of this myself, at least to resolve my current need.</p>
+<p>In the pursuit of finding such a product I ended up creating a proof of concept of this myself, at least to solve my current need.</p>
 
 <p>I hope this can be useful for others as well.</p>
       </section>
