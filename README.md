@@ -3,7 +3,7 @@
 Are you sick of always having to implement and maintain the client-side services for reaching your Rest API.
 With the REST API Codegenerator Maven Plugin you are able to automatically generate the client-side code to reach your API.
 
-For now the plugin generates java code as a proof of concept - see example of usage in the [akka-persistence-java-example](https://github.com/jansoren/akka-persistence-java-example)-project.
+For now the plugin scans your code for [Jersey](https://jersey.java.net/) resources and generates java code - see example of usage in the [akka-persistence-java-example](https://github.com/jansoren/akka-persistence-java-example)-project. In my next project I will extend the plugin to generate ReactJS code aswell.
 
 If you find the plugin useful please give it a star. Also feel free to create pull requests and extend the plugin to generate for example Ajax, AngularJS or ReactJS code.
 
@@ -74,6 +74,6 @@ Over the years I have created a few REST API's, and I always end up using alot o
 In one of the projects we had a Quality-test application implemented in java that ran tests continuously, something that required updating the client-side code rapidly.
 With this challenge we ended up creating alot of the same boilerplate code for each new service to reach the API, and I felt that this code should and could be automaticly generated.
 
-In the pursuit of finding such a product I ended up creating a proof of concept of this myself, at least to resolve my current need.
+In the pursuit of finding such a product I ended up creating a proof of concept of this myself, at least to solve my current need.
 
 I hope this can be useful for others as well.
