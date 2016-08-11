@@ -70,10 +70,10 @@ Not implemented yet
 
 ## Why this plugin
 
-Over the years I have created a few REST API's, and I always end up using alot of time implementing the client-side code for reaching the API's.
+Over the years I have created a few REST API's, and I always end up using a lot of time implementing the client-side code for reaching the API's.
 In one of the projects we had a Quality-test application implemented in java that ran tests continuously, something that required updating the client-side code rapidly.
-With this challenge we ended up creating alot of the same boilerplate code for each new service to reach the API, and I felt that this code should and could be automaticly generated.
+With this challenge we ended up creating a lot of the same boilerplate code for each new service we implemented, and it felt like this code should and could be automatically generated.
 
-In the pursuit of finding such a product I ended up creating a proof of concept of this myself, at least to solve my current need.
+In the pursuit of finding such a product I ended up creating a plugin to solve my current need. The result became this plugin.
 
 I hope this can be useful for others as well.
