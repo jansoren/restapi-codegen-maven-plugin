@@ -1,5 +1,6 @@
 package com.example.helloworld;
 
+import java.lang.String;
 import java.lang.Void;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -35,5 +36,10 @@ public class MyService {
   public Something putSomething(Something dataToPut) {
     Response response = target.path("put").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(dataToPut, MediaType.APPLICATION_JSON_TYPE));
     return response.readEntity(Something.class);
+  }
+
+  public String putSomething(String id, Something dataToPut) {
+    Response response = target.path("put/{id}").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(dataToPut, MediaType.APPLICATION_JSON_TYPE));
+    return response.readEntity(String.class);
   }
 }

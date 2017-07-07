@@ -1,10 +1,12 @@
 package no.jansoren.codegen.generating;
 
+import com.squareup.javapoet.ParameterSpec;
 import no.jansoren.codegen.Something;
 import no.jansoren.codegen.scanning.ScannedClass;
 import no.jansoren.codegen.scanning.ScannedMethod;
 import org.junit.Test;
 
+import javax.lang.model.element.Modifier;
 import javax.ws.rs.HttpMethod;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ public class JavaCodeGeneratorTest {
         scannedMethods.add(createScannedMethodsGet());
         scannedMethods.add(createScannedMethodsPost());
         scannedMethods.add(createScannedMethodsPut());
+        scannedMethods.add(createScannedMethodsPutWithAnnotatedPathParam());
         scannedMethods.add(createScannedMethodsDelete());
         scannedMethods.add(createScannedMethodsHead());
         return scannedMethods;
@@ -60,7 +63,9 @@ public class JavaCodeGeneratorTest {
         scannedMethod.setMethod(HttpMethod.POST);
         scannedMethod.setPath("add");
         scannedMethod.setClassToReturn(Something.class);
-        scannedMethod.setClassToPost(Something.class);
+        List<ParameterSpec> specs = new ArrayList<>();
+        specs.add(ParameterSpec.builder(Something.class, "dataToPost").build());
+        scannedMethod.setParameterSpecs(specs);
         return scannedMethod;
     }
 
@@ -70,7 +75,22 @@ public class JavaCodeGeneratorTest {
         scannedMethod.setMethod(HttpMethod.PUT);
         scannedMethod.setPath("put");
         scannedMethod.setClassToReturn(Something.class);
-        scannedMethod.setClassToPost(Something.class);
+        List<ParameterSpec> specs = new ArrayList<>();
+        specs.add(ParameterSpec.builder(Something.class, "dataToPut").build());
+        scannedMethod.setParameterSpecs(specs);
+        return scannedMethod;
+    }
+
+    private ScannedMethod createScannedMethodsPutWithAnnotatedPathParam() {
+        ScannedMethod scannedMethod = new ScannedMethod();
+        scannedMethod.setName("putSomething");
+        scannedMethod.setMethod(HttpMethod.PUT);
+        scannedMethod.setPath("put/{id}");
+        scannedMethod.setClassToReturn(String.class);
+        List<ParameterSpec> specs = new ArrayList<>();
+        specs.add(ParameterSpec.builder(String.class, "id").build());
+        specs.add(ParameterSpec.builder(Something.class, "dataToPut").build());
+        scannedMethod.setParameterSpecs(specs);
         return scannedMethod;
     }
 

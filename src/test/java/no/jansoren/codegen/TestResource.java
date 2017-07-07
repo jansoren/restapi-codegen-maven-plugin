@@ -7,28 +7,9 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class TestResource {
 
-    @GET
-    @Path("/get")
-    public Something getSomething() {
-        return new Something();
-    }
-
-    @POST
-    @Path("/add")
-    public Something addSomething(Something something) {
-        return something;
-    }
-
     @PUT
-    @Path("/update")
-    public Something updateSomething(Something something) {
-        return something;
+    @Path("/update/{id}")
+    public String updateSomething2(@PathParam("id") String id, Something something) {
+        return id;
     }
-
-    @DELETE
-    @Path("/delete")
-    public void deleteSomething(int id) {
-
-    }
-
 }

@@ -1,14 +1,17 @@
 package no.jansoren.codegen.scanning;
 
 import com.google.common.collect.Lists;
+import com.squareup.javapoet.ParameterSpec;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
+import javax.lang.model.element.Modifier;
 import javax.ws.rs.*;
 import java.io.File;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -109,18 +112,54 @@ public class ResourcesScanner {
         scannedMethod.setMethod(getHttpMethod(method));
         scannedMethod.setPath(getMethodPath(method));
         scannedMethod.setClassToReturn(method.getReturnType());
-        scannedMethod.setClassToPost(getClassToPost(method));
+        scannedMethod.setParameterSpecs(getParameterSpecs(method));
         return scannedMethod;
     }
 
-    private static Class<?> getClassToPost(Method method) {
-        Class<?>[] parameterTypes = method.getParameterTypes();
-        if(parameterTypes.length > 0) {
-            return parameterTypes[0];
+    private static List<ParameterSpec> getParameterSpecs(Method method) {
+        List<ParameterSpec> parameterSpecs = new ArrayList<>();
+        int parameterCount = method.getParameterCount();
+        for(int i=0; i<parameterCount; i++) {
+            parameterSpecs.add(createParameterSpec(method.getParameterTypes()[i], i));
         }
-        return null;
+        return parameterSpecs;
     }
 
+    private static ParameterSpec createParameterSpec(Class<?> aClass1, int i) {
+        Class<?> aClass = aClass1;
+        return ParameterSpec.builder(aClass, "param" + i, Modifier.PUBLIC).build();
+    }
+
+    /*
+        private static Class<?>[] getClassToPost(Method method) {
+            int parameterCount = method.getParameterCount();
+            for(int i=0; i<parameterCount; i++) {
+                Class<?> aClass = method.getParameterTypes()[i];
+            }
+
+
+            for(int i=0; i<parameterCount; i++) {
+                Annotation[] annotations = method.getParameterAnnotations()[i];
+                boolean doesParamHavePathParamAnnotation = doesParamHavePathParamAnnotation(annotations);
+                if(!doesParamHavePathParamAnnotation) {
+                    return method.getParameterTypes()[i];
+                }
+            }
+            return null;
+        }
+        */
+/*
+    private static boolean doesParamHavePathParamAnnotation(Annotation[] annotations1) {
+        boolean doesParamHavePathParamAnnotation = false;
+        Annotation[] annotations = annotations1;
+        for(Annotation annotation: annotations) {
+            if(PathParam.class == annotation.annotationType()) {
+                doesParamHavePathParamAnnotation = true;
+            }
+        }
+        return doesParamHavePathParamAnnotation;
+    }
+*/
     private static String getMethodPath(Method method) {
         Path[] annotationsByType = method.getAnnotationsByType(Path.class);
         if(annotationsByType != null && annotationsByType.length > 0) {

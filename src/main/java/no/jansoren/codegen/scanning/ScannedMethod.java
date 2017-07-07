@@ -1,12 +1,17 @@
 package no.jansoren.codegen.scanning;
 
+import com.squareup.javapoet.ParameterSpec;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class ScannedMethod {
 
     private String name;
     private String method;
     private String path;
     private Class classToReturn;
-    private Class classToPost;
+    private List<ParameterSpec> parameterSpecs;
 
     public String getName() {
         return name;
@@ -40,12 +45,12 @@ public class ScannedMethod {
         this.classToReturn = classToReturn;
     }
 
-    public Class getClassToPost() {
-        return classToPost;
+    public List<ParameterSpec> getParameterSpecs() {
+        return parameterSpecs;
     }
 
-    public void setClassToPost(Class classToPost) {
-        this.classToPost = classToPost;
+    public void setParameterSpecs(List<ParameterSpec> parameterSpecs) {
+        this.parameterSpecs = parameterSpecs;
     }
 
     @Override
@@ -55,7 +60,7 @@ public class ScannedMethod {
                 ", method='" + method + '\'' +
                 ", path='" + path + '\'' +
                 ", classToReturn=" + classToReturn +
-                ", classToPost=" + classToPost +
+                ", parameterSpecs=" + parameterSpecs +
                 '}';
     }
 }

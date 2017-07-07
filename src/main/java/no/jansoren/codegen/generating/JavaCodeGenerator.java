@@ -1,18 +1,12 @@
 package no.jansoren.codegen.generating;
 
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.*;
 import no.jansoren.codegen.scanning.ScannedClass;
 import no.jansoren.codegen.scanning.ScannedMethod;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import javax.lang.model.element.Modifier;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.client.Client;
@@ -80,7 +74,7 @@ public class JavaCodeGenerator {
                     .build();
         } else if(HttpMethod.POST.equals(scannedMethod.getMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
-                    .addParameter(scannedMethod.getClassToPost(), "dataToPost")
+                    .addParameters(scannedMethod.getParameterSpecs())
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, scannedMethod.getPath(), MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
@@ -88,7 +82,7 @@ public class JavaCodeGenerator {
                     .build();
         } else if(HttpMethod.PUT.equals(scannedMethod.getMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
-                    .addParameter(scannedMethod.getClassToPost(), "dataToPut")
+                    .addParameters(scannedMethod.getParameterSpecs())
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, scannedMethod.getPath(), MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
@@ -114,5 +108,4 @@ public class JavaCodeGenerator {
             }
         };
     }
-
 }
