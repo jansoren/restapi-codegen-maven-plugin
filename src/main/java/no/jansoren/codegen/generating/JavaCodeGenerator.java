@@ -72,7 +72,10 @@ public class JavaCodeGenerator {
         if(HttpMethod.GET.equals(scannedMethod.getHttpMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).get()", Response.class, getPath(scannedMethod), MediaType.class)
+                    .addStatement("$T response = target" +
+                            getPath(scannedMethod) +
+                            ".request($T.APPLICATION_JSON_TYPE)" +
+                            ".get()", Response.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
@@ -81,7 +84,10 @@ public class JavaCodeGenerator {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .addParameters(parameterSpecs)
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, getPath(scannedMethod), MediaType.class, Entity.class, MediaType.class)
+                    .addStatement("$T response = target" +
+                            getPath(scannedMethod) +
+                            ".request($T.APPLICATION_JSON_TYPE)" +
+                            ".post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
@@ -90,14 +96,20 @@ public class JavaCodeGenerator {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .addParameters(parameterSpecs)
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, getPath(scannedMethod), MediaType.class, Entity.class, MediaType.class)
+                    .addStatement("$T response = target" +
+                            getPath(scannedMethod) +
+                            ".request($T.APPLICATION_JSON_TYPE)" +
+                            ".put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
         } else if(HttpMethod.DELETE.equals(scannedMethod.getHttpMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).delete()", Response.class, getPath(scannedMethod), MediaType.class)
+                    .addStatement("$T response = target" +
+                            getPath(scannedMethod) +
+                            ".request($T.APPLICATION_JSON_TYPE)" +
+                            ".delete()", Response.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", Void.class)
                     .addModifiers(Modifier.PUBLIC)
                     .build();
@@ -107,16 +119,10 @@ public class JavaCodeGenerator {
     }
 
     private static String getPath(ScannedMethod scannedMethod) {
-        List<ParameterSpec> parameterSpecs = ParameterSpecMapper.map(scannedMethod.getMethod());
-        /*for(ParameterSpec parameterSpec : parameterSpecs) {
-            parameterSpec.annotations
-        }*/
-
-
-        if(parameterSpecs != null && parameterSpecs.size() <= 1) {
-            return scannedMethod.getPath();
-        }
-        return scannedMethod.getPath();
+        String path = scannedMethod.getPath()
+                .replace("{", "\" + ")
+                .replace("}", " + \"");
+        return ".path(\"" + path + "\")";
     }
 
     private static Comparator<MethodSpec> createMethodSpecComparator() {

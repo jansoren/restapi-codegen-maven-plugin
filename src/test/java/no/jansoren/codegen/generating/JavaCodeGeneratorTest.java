@@ -30,12 +30,12 @@ public class JavaCodeGeneratorTest {
 
     private List<ScannedMethod> createScannedMethods() {
         List<ScannedMethod> scannedMethods = new ArrayList<>();
-        //scannedMethods.add(createScannedMethodsGet());
+        scannedMethods.add(createScannedMethodsGet());
         scannedMethods.add(createScannedMethodsPost());
-       // scannedMethods.add(createScannedMethodsPut());
-       // scannedMethods.add(createScannedMethodsPutWithAnnotatedPathParam());
-       // scannedMethods.add(createScannedMethodsDelete());
-        //scannedMethods.add(createScannedMethodsHead());
+        scannedMethods.add(createScannedMethodsPut());
+        scannedMethods.add(createScannedMethodsPutWithAnnotatedPathParam());
+        scannedMethods.add(createScannedMethodsDelete());
+        scannedMethods.add(createScannedMethodsHead());
         return scannedMethods;
     }
 

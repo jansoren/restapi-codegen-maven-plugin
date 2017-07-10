@@ -26,11 +26,11 @@ public class ParameterSpecMapper {
         AnnotationSpec annotationSpec = mapAnnotationSpec(annotations);
 
         if(annotationSpec != null) {
-            return ParameterSpec.builder(parameterType, parameterType.getName())
+            return ParameterSpec.builder(parameterType, parameterType.getSimpleName().toLowerCase())
                     .addAnnotation(annotationSpec)
                     .build();
         }
-        return ParameterSpec.builder(parameterType, parameterType.getName())
+        return ParameterSpec.builder(parameterType, parameterType.getSimpleName().toLowerCase())
                 .build();
     }
 

@@ -1,5 +1,8 @@
 package com.example.helloworld;
 
+import java.lang.String;
+import java.lang.Void;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -16,8 +19,28 @@ public class MyService {
     target = client.target("https://localhost:1234").path("something");
   }
 
-  public Something addSomething(Something no.jansoren.codegen.Something) {
+  public Something addSomething(Something something) {
     Response response = target.path("add").request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(dataToPost, MediaType.APPLICATION_JSON_TYPE));
     return response.readEntity(Something.class);
+  }
+
+  public Void deleteSomething() {
+    Response response = target.path("delete").request(MediaType.APPLICATION_JSON_TYPE).delete();
+    return response.readEntity(Void.class);
+  }
+
+  public Something getSomething() {
+    Response response = target.path("get").request(MediaType.APPLICATION_JSON_TYPE).get();
+    return response.readEntity(Something.class);
+  }
+
+  public Something putSomething(Something something) {
+    Response response = target.path("put").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(dataToPut, MediaType.APPLICATION_JSON_TYPE));
+    return response.readEntity(Something.class);
+  }
+
+  public String putSomething2(@PathParam(test = "id") String string, Something something) {
+    Response response = target.path("put/" + id + "").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(dataToPut, MediaType.APPLICATION_JSON_TYPE));
+    return response.readEntity(String.class);
   }
 }
