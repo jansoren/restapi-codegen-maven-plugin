@@ -1,17 +1,14 @@
 package no.jansoren.codegen.scanning;
 
-import com.squareup.javapoet.ParameterSpec;
-
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Method;
 
 public class ScannedMethod {
 
     private String name;
-    private String method;
+    private String httpMethod;
     private String path;
     private Class classToReturn;
-    private List<ParameterSpec> parameterSpecs;
+    private Method method;
 
     public String getName() {
         return name;
@@ -21,12 +18,12 @@ public class ScannedMethod {
         this.name = name;
     }
 
-    public String getMethod() {
-        return method;
+    public String getHttpMethod() {
+        return httpMethod;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
     }
 
     public String getPath() {
@@ -45,22 +42,22 @@ public class ScannedMethod {
         this.classToReturn = classToReturn;
     }
 
-    public List<ParameterSpec> getParameterSpecs() {
-        return parameterSpecs;
+    public Method getMethod() {
+        return method;
     }
 
-    public void setParameterSpecs(List<ParameterSpec> parameterSpecs) {
-        this.parameterSpecs = parameterSpecs;
+    public void setMethod(Method method) {
+        this.method = method;
     }
 
     @Override
     public String toString() {
         return "ScannedMethod{" +
                 "name='" + name + '\'' +
-                ", method='" + method + '\'' +
+                ", httpMethod='" + httpMethod + '\'' +
                 ", path='" + path + '\'' +
                 ", classToReturn=" + classToReturn +
-                ", parameterSpecs=" + parameterSpecs +
+                ", method=" + method +
                 '}';
     }
 }

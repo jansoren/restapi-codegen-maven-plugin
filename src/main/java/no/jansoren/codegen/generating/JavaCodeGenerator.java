@@ -1,12 +1,10 @@
 package no.jansoren.codegen.generating;
 
 import com.squareup.javapoet.*;
+import no.jansoren.codegen.mappers.ParameterSpecMapper;
 import no.jansoren.codegen.scanning.ScannedClass;
 import no.jansoren.codegen.scanning.ScannedMethod;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
 import javax.lang.model.element.Modifier;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.client.Client;
@@ -15,6 +13,12 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class JavaCodeGenerator {
 
@@ -65,39 +69,54 @@ public class JavaCodeGenerator {
     }
 
     private static MethodSpec createMethodSpec(ScannedMethod scannedMethod) {
-        if(HttpMethod.GET.equals(scannedMethod.getMethod())) {
+        if(HttpMethod.GET.equals(scannedMethod.getHttpMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).get()", Response.class, scannedMethod.getPath(), MediaType.class)
+                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).get()", Response.class, getPath(scannedMethod), MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
-        } else if(HttpMethod.POST.equals(scannedMethod.getMethod())) {
+        } else if(HttpMethod.POST.equals(scannedMethod.getHttpMethod())) {
+            List<ParameterSpec> parameterSpecs = ParameterSpecMapper.map(scannedMethod.getMethod());
             return MethodSpec.methodBuilder(scannedMethod.getName())
-                    .addParameters(scannedMethod.getParameterSpecs())
+                    .addParameters(parameterSpecs)
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, scannedMethod.getPath(), MediaType.class, Entity.class, MediaType.class)
+                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, getPath(scannedMethod), MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
-        } else if(HttpMethod.PUT.equals(scannedMethod.getMethod())) {
+        } else if(HttpMethod.PUT.equals(scannedMethod.getHttpMethod())) {
+            List<ParameterSpec> parameterSpecs = ParameterSpecMapper.map(scannedMethod.getMethod());
             return MethodSpec.methodBuilder(scannedMethod.getName())
-                    .addParameters(scannedMethod.getParameterSpecs())
+                    .addParameters(parameterSpecs)
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, scannedMethod.getPath(), MediaType.class, Entity.class, MediaType.class)
+                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, getPath(scannedMethod), MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
-        } else if(HttpMethod.DELETE.equals(scannedMethod.getMethod())) {
+        } else if(HttpMethod.DELETE.equals(scannedMethod.getHttpMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
-                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).delete()", Response.class, scannedMethod.getPath(), MediaType.class)
+                    .addStatement("$T response = target.path($S).request($T.APPLICATION_JSON_TYPE).delete()", Response.class, getPath(scannedMethod), MediaType.class)
                     .addStatement("return response.readEntity($T.class)", Void.class)
                     .addModifiers(Modifier.PUBLIC)
                     .build();
         } else {
             return null;
         }
+    }
+
+    private static String getPath(ScannedMethod scannedMethod) {
+        List<ParameterSpec> parameterSpecs = ParameterSpecMapper.map(scannedMethod.getMethod());
+        /*for(ParameterSpec parameterSpec : parameterSpecs) {
+            parameterSpec.annotations
+        }*/
+
+
+        if(parameterSpecs != null && parameterSpecs.size() <= 1) {
+            return scannedMethod.getPath();
+        }
+        return scannedMethod.getPath();
     }
 
     private static Comparator<MethodSpec> createMethodSpecComparator() {

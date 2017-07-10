@@ -8,7 +8,6 @@ import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
-import javax.lang.model.element.Modifier;
 import javax.ws.rs.*;
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -109,26 +108,25 @@ public class ResourcesScanner {
     private static ScannedMethod createScannedMethod(Class<?> resourceClass, Method method) {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName(method.getName());
-        scannedMethod.setMethod(getHttpMethod(method));
+        scannedMethod.setHttpMethod(getHttpMethod(method));
         scannedMethod.setPath(getMethodPath(method));
         scannedMethod.setClassToReturn(method.getReturnType());
-        scannedMethod.setParameterSpecs(getParameterSpecs(method));
+        scannedMethod.setMethod(method);
         return scannedMethod;
     }
-
+/*
     private static List<ParameterSpec> getParameterSpecs(Method method) {
         List<ParameterSpec> parameterSpecs = new ArrayList<>();
-        int parameterCount = method.getParameterCount();
-        for(int i=0; i<parameterCount; i++) {
-            parameterSpecs.add(createParameterSpec(method.getParameterTypes()[i], i));
+        for(int i=0; i<method.getParameterCount(); i++) {
+            Class<?> aClass = method.getParameterTypes()[i];
+            Annotation[] annotations = method.getParameterAnnotations()[i];
+
+            ParameterSpec parameterSpec = ParameterSpec.builder(aClass, "param" + i).addAnnotation().build();
+            parameterSpecs.add(parameterSpec);
         }
         return parameterSpecs;
-    }
+    }*/
 
-    private static ParameterSpec createParameterSpec(Class<?> aClass1, int i) {
-        Class<?> aClass = aClass1;
-        return ParameterSpec.builder(aClass, "param" + i, Modifier.PUBLIC).build();
-    }
 
     /*
         private static Class<?>[] getClassToPost(Method method) {

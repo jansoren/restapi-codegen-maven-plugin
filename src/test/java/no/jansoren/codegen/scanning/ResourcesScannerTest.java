@@ -18,7 +18,7 @@ public class ResourcesScannerTest {
             assertNotNull(scannedClass.getName());
             for(ScannedMethod scannedMethod : scannedClass.getScannedMethods()) {
                 assertNotNull(scannedMethod.getName());
-                assertNotNull(scannedMethod.getMethod());
+                assertNotNull(scannedMethod.getHttpMethod());
                 assertNotNull(scannedMethod.getClassToReturn());
             }
         }
