@@ -1,6 +1,7 @@
 package no.jansoren.codegen;
 
 import no.jansoren.codegen.generating.JavaCodeGenerator;
+import no.jansoren.codegen.generating.ReactCodeGenerator;
 import no.jansoren.codegen.scanning.ResourcesScanner;
 import no.jansoren.codegen.scanning.ScannedClass;
 import org.apache.maven.plugin.AbstractMojo;
@@ -19,18 +20,21 @@ public class CodegenMojo extends AbstractMojo {
     @Parameter( defaultValue = "${project}", readonly = true )
     private MavenProject mavenProject;
 
-    @Parameter( property = "generatedCodeFolder", defaultValue = "generated-code" )
-    private String generatedCodeFolder;
+    @Parameter( property = "generatedJavaCodeFolder", defaultValue = "generated-java-code" )
+    private String generatedJavaCodeFolder;
 
-    @Parameter( property = "generatedCodePackage", defaultValue = "com.example.services" )
-    private String generatedCodePackage;
+    @Parameter( property = "generatedJavaCodePackage", defaultValue = "com.example.services" )
+    private String generatedJavaCodePackage;
+
+    @Parameter( property = "generatedReactCodeFolder", defaultValue = "generated-react-code" )
+    private String generatedReactCodeFolder;
 
     @Parameter(property = "rootHost", defaultValue = "http://localhost:8080/")
     private String rootHost;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        getLog().info("Generating code - " + generatedCodeFolder);
+        getLog().info("Generating code - " + generatedJavaCodeFolder);
 
         ResourcesScanner scanner = new ResourcesScanner(getLog(), mavenProject);
 
@@ -39,9 +43,12 @@ public class CodegenMojo extends AbstractMojo {
             getLog().info("Class that is scanned: " + scannedClass);
         }
 
-        getLog().info("Generated code folder" + new File(generatedCodeFolder).getAbsolutePath());
+        getLog().info("Generated java code folder" + new File(generatedJavaCodeFolder).getAbsolutePath());
+        JavaCodeGenerator.generate(scannedClasses, generatedJavaCodeFolder, generatedJavaCodePackage, rootHost);
 
-        JavaCodeGenerator.generate(scannedClasses, generatedCodeFolder, generatedCodePackage, rootHost);
+        getLog().info("Generated react code folder" + new File(generatedReactCodeFolder).getAbsolutePath());
+        ReactCodeGenerator.generate(scannedClasses, generatedReactCodeFolder, rootHost);
+
     }
 
 }
