@@ -2,7 +2,6 @@ package com.example.helloworld;
 
 import java.lang.String;
 import java.lang.Void;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -39,7 +38,7 @@ public class MyService {
     return response.readEntity(Something.class);
   }
 
-  public String putSomething2(@PathParam(test = "id") String string, Something something) {
+  public String putSomething2(String id, Something something) {
     Response response = target.path("put/" + id + "").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(dataToPut, MediaType.APPLICATION_JSON_TYPE));
     return response.readEntity(String.class);
   }

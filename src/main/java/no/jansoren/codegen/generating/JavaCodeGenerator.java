@@ -69,11 +69,14 @@ public class JavaCodeGenerator {
     }
 
     private static MethodSpec createMethodSpec(ScannedMethod scannedMethod) {
+        String pathStatement = getPath(scannedMethod);
+        //String paramName =
+
         if(HttpMethod.GET.equals(scannedMethod.getHttpMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target" +
-                            getPath(scannedMethod) +
+                            pathStatement +
                             ".request($T.APPLICATION_JSON_TYPE)" +
                             ".get()", Response.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
@@ -85,7 +88,7 @@ public class JavaCodeGenerator {
                     .addParameters(parameterSpecs)
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target" +
-                            getPath(scannedMethod) +
+                            pathStatement +
                             ".request($T.APPLICATION_JSON_TYPE)" +
                             ".post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
@@ -97,7 +100,7 @@ public class JavaCodeGenerator {
                     .addParameters(parameterSpecs)
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target" +
-                            getPath(scannedMethod) +
+                            pathStatement +
                             ".request($T.APPLICATION_JSON_TYPE)" +
                             ".put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
@@ -107,7 +110,7 @@ public class JavaCodeGenerator {
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .returns(scannedMethod.getClassToReturn())
                     .addStatement("$T response = target" +
-                            getPath(scannedMethod) +
+                            pathStatement +
                             ".request($T.APPLICATION_JSON_TYPE)" +
                             ".delete()", Response.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", Void.class)

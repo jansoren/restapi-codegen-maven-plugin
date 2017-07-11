@@ -1,8 +1,8 @@
 package no.jansoren.codegen.mappers;
 
-import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ParameterSpec;
 
+import javax.ws.rs.PathParam;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -23,23 +23,34 @@ public class ParameterSpecMapper {
     }
 
     private static ParameterSpec map(Class<?> parameterType, Annotation[] annotations) {
-        AnnotationSpec annotationSpec = mapAnnotationSpec(annotations);
-
-        if(annotationSpec != null) {
-            return ParameterSpec.builder(parameterType, parameterType.getSimpleName().toLowerCase())
-                    .addAnnotation(annotationSpec)
-                    .build();
-        }
-        return ParameterSpec.builder(parameterType, parameterType.getSimpleName().toLowerCase())
+        String parameterName = getParameterName(parameterType, annotations);
+        return ParameterSpec.builder(parameterType, parameterName)
                 .build();
     }
 
-    private static AnnotationSpec mapAnnotationSpec(Annotation[] annotations) {
-        AnnotationSpec annotationSpec = null;
-        if(annotations.length > 0) {
-            annotationSpec = AnnotationSpecMapper.map(annotations[0]);
+    private static String getParameterName(Class<?> parameterType, Annotation[] annotations) {
+        String annotationName = getAnnotationName(annotations);
+        if(annotationName != null) {
+            return getAnnotationName(annotations);
         }
-        return annotationSpec;
+        return parameterType.getSimpleName().toLowerCase();
+    }
+
+    private static String getAnnotationName(Annotation[] annotations) {
+        if(hasAnnotation(annotations)) {
+            if (isPathParam(annotations[0])) {
+                return ((PathParam) annotations[0]).value();
+            }
+        }
+        return null;
+    }
+
+    private static boolean hasAnnotation(Annotation[] annotations) {
+        return annotations != null && annotations.length > 0;
+    }
+
+    private static boolean isPathParam(Annotation annotation) {
+        return annotation.annotationType() == PathParam.class;
     }
 
 }
