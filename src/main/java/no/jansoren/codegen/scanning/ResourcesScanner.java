@@ -1,7 +1,6 @@
 package no.jansoren.codegen.scanning;
 
 import com.google.common.collect.Lists;
-import com.squareup.javapoet.ParameterSpec;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
@@ -10,7 +9,6 @@ import org.reflections.util.ConfigurationBuilder;
 
 import javax.ws.rs.*;
 import java.io.File;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -114,50 +112,7 @@ public class ResourcesScanner {
         scannedMethod.setMethod(method);
         return scannedMethod;
     }
-/*
-    private static List<ParameterSpec> getParameterSpecs(Method method) {
-        List<ParameterSpec> parameterSpecs = new ArrayList<>();
-        for(int i=0; i<method.getParameterCount(); i++) {
-            Class<?> aClass = method.getParameterTypes()[i];
-            Annotation[] annotations = method.getParameterAnnotations()[i];
 
-            ParameterSpec parameterSpec = ParameterSpec.builder(aClass, "param" + i).addAnnotation().build();
-            parameterSpecs.add(parameterSpec);
-        }
-        return parameterSpecs;
-    }*/
-
-
-    /*
-        private static Class<?>[] getClassToPost(Method method) {
-            int parameterCount = method.getParameterCount();
-            for(int i=0; i<parameterCount; i++) {
-                Class<?> aClass = method.getParameterTypes()[i];
-            }
-
-
-            for(int i=0; i<parameterCount; i++) {
-                Annotation[] annotations = method.getParameterAnnotations()[i];
-                boolean doesParamHavePathParamAnnotation = doesParamHavePathParamAnnotation(annotations);
-                if(!doesParamHavePathParamAnnotation) {
-                    return method.getParameterTypes()[i];
-                }
-            }
-            return null;
-        }
-        */
-/*
-    private static boolean doesParamHavePathParamAnnotation(Annotation[] annotations1) {
-        boolean doesParamHavePathParamAnnotation = false;
-        Annotation[] annotations = annotations1;
-        for(Annotation annotation: annotations) {
-            if(PathParam.class == annotation.annotationType()) {
-                doesParamHavePathParamAnnotation = true;
-            }
-        }
-        return doesParamHavePathParamAnnotation;
-    }
-*/
     private static String getMethodPath(Method method) {
         Path[] annotationsByType = method.getAnnotationsByType(Path.class);
         if(annotationsByType != null && annotationsByType.length > 0) {
