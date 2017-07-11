@@ -36,4 +36,10 @@ public class TestResource {
     public String putSomething2(@PathParam("id") String id, Something something) {
         return id;
     }
+
+    @PUT
+    @Path("/put/{id}")
+    public String putSomething3(@PathParam("id") String id, int count) {
+        return id;
+    }
 }

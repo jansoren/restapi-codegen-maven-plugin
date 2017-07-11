@@ -34,6 +34,7 @@ public class JavaCodeGeneratorTest {
         scannedMethods.add(createScannedMethodsPost());
         scannedMethods.add(createScannedMethodsPut());
         scannedMethods.add(createScannedMethodsPutWithAnnotatedPathParam());
+        scannedMethods.add(createScannedMethodsPutWithParamInt());
         scannedMethods.add(createScannedMethodsDelete());
         scannedMethods.add(createScannedMethodsHead());
         return scannedMethods;
@@ -88,6 +89,18 @@ public class JavaCodeGeneratorTest {
         scannedMethod.setHttpMethod(HttpMethod.PUT);
         scannedMethod.setPath("put/{id}");
         scannedMethod.setClassToReturn(String.class);
+        scannedMethod.setMethod(getMethod(methodName));
+        return scannedMethod;
+    }
+
+    private ScannedMethod createScannedMethodsPutWithParamInt() {
+        String methodName = "putSomething3";
+
+        ScannedMethod scannedMethod = new ScannedMethod();
+        scannedMethod.setName(methodName);
+        scannedMethod.setHttpMethod(HttpMethod.PUT);
+        scannedMethod.setPath("put");
+        scannedMethod.setClassToReturn(Something.class);
         scannedMethod.setMethod(getMethod(methodName));
         return scannedMethod;
     }

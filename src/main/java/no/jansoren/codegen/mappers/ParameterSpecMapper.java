@@ -10,6 +10,8 @@ import java.util.List;
 
 public class ParameterSpecMapper {
 
+    private static final String PARAM_NAME_POSTFIX = "Param";
+
     public static List<ParameterSpec> map(Method method) {
         List<ParameterSpec> parameterSpecs = new ArrayList<>();
         if(method != null) {
@@ -33,7 +35,7 @@ public class ParameterSpecMapper {
         if(annotationName != null) {
             return getAnnotationName(annotations);
         }
-        return parameterType.getSimpleName().toLowerCase();
+        return parameterType.getSimpleName().toLowerCase() + PARAM_NAME_POSTFIX;
     }
 
     private static String getAnnotationName(Annotation[] annotations) {
