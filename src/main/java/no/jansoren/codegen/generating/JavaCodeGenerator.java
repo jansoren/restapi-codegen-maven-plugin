@@ -70,7 +70,6 @@ public class JavaCodeGenerator {
 
     private static MethodSpec createMethodSpec(ScannedMethod scannedMethod) {
         String pathStatement = getPath(scannedMethod);
-        //String paramName =
 
         if(HttpMethod.GET.equals(scannedMethod.getHttpMethod())) {
             return MethodSpec.methodBuilder(scannedMethod.getName())
@@ -90,7 +89,7 @@ public class JavaCodeGenerator {
                     .addStatement("$T response = target" +
                             pathStatement +
                             ".request($T.APPLICATION_JSON_TYPE)" +
-                            ".post($T.entity(dataToPost, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
+                            ".post($T.entity(" + getDataToPostName(parameterSpecs) + ", $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
@@ -102,7 +101,7 @@ public class JavaCodeGenerator {
                     .addStatement("$T response = target" +
                             pathStatement +
                             ".request($T.APPLICATION_JSON_TYPE)" +
-                            ".put($T.entity(dataToPut, $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
+                            ".put($T.entity(" + getDataToPostName(parameterSpecs) + ", $T.APPLICATION_JSON_TYPE))", Response.class, MediaType.class, Entity.class, MediaType.class)
                     .addStatement("return response.readEntity($T.class)", scannedMethod.getClassToReturn())
                     .addModifiers(Modifier.PUBLIC)
                     .build();
@@ -119,6 +118,11 @@ public class JavaCodeGenerator {
         } else {
             return null;
         }
+    }
+
+    private static String getDataToPostName(List<ParameterSpec> parameterSpecs) {
+        ParameterSpec parameterSpec = parameterSpecs.get(parameterSpecs.size() - 1);
+        return parameterSpec.name;
     }
 
     private static String getPath(ScannedMethod scannedMethod) {
