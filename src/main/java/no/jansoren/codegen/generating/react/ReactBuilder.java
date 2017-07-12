@@ -57,7 +57,8 @@ public class ReactBuilder {
             String params = getMethodParamNames(scannedMethod.getMethod());
             String path = getPath(scannedMethod);
             String httpMethod = scannedMethod.getHttpMethod().toLowerCase();
-            lines.add("export const " + name + " = " + params + " => axios." + httpMethod + "(`${hostname}/" + path + "`);");
+            String dataToPostName = getDataToPostName(scannedMethod);
+            lines.add("export const " + name + " = " + params + " => axios." + httpMethod + "(`${hostname}/" + path + "`" + dataToPostName +");");
         }
         return this;
     }
@@ -69,11 +70,11 @@ public class ReactBuilder {
     private String getMethodParamNames(Method method) {
         if(method != null) {
             if(method.getParameterCount() == 1) {
-                return getParameterName(method.getParameterTypes()[0], method.getAnnotations());
+                return getParameterName(method.getParameterTypes()[0], method.getParameterAnnotations()[0]);
             } else {
                 String params = "(";
                 for(int i=0; i<method.getParameterCount(); i++) {
-                    params += getParameterName(method.getParameterTypes()[i], method.getAnnotations());
+                    params += getParameterName(method.getParameterTypes()[i], method.getParameterAnnotations()[i]);
                     if(i != method.getParameterCount()-1) {
                         params += ", ";
                     }
@@ -104,5 +105,14 @@ public class ReactBuilder {
             return annotationName;
         }
         return MethodUtil.getParameterName(parameterType);
+    }
+
+    private String getDataToPostName(ScannedMethod scannedMethod) {
+        String httpMethod = scannedMethod.getHttpMethod();
+        Method method = scannedMethod.getMethod();
+        if(httpMethod == "POST" || httpMethod == "PUT") {
+            return ", " + method.getParameterTypes()[method.getParameterCount()-1].getSimpleName().toLowerCase();
+        }
+        return "";
     }
 }
