@@ -33,7 +33,7 @@ public class ScannedClassTestData {
     private static ScannedClass createScannedClass() {
         ScannedClass scannedClass = new ScannedClass();
         scannedClass.setName("MyResource");
-        scannedClass.setPath("something");
+        scannedClass.setPath("/something");
         scannedClass.setScannedMethods(createScannedMethods());
         return scannedClass;
     }
@@ -42,7 +42,7 @@ public class ScannedClassTestData {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName("getSomething");
         scannedMethod.setHttpMethod(HttpMethod.GET);
-        scannedMethod.setPath("get");
+        scannedMethod.setPath("/get");
         scannedMethod.setClassToReturn(Something.class);
         return scannedMethod;
     }
@@ -53,7 +53,7 @@ public class ScannedClassTestData {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName(methodName);
         scannedMethod.setHttpMethod(HttpMethod.POST);
-        scannedMethod.setPath("add");
+        scannedMethod.setPath("/add");
         scannedMethod.setClassToReturn(Something.class);
         scannedMethod.setMethod(getMethod(methodName));
         return scannedMethod;
@@ -65,7 +65,7 @@ public class ScannedClassTestData {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName(methodName);
         scannedMethod.setHttpMethod(HttpMethod.PUT);
-        scannedMethod.setPath("put");
+        scannedMethod.setPath("/put");
         scannedMethod.setClassToReturn(Something.class);
         scannedMethod.setMethod(getMethod(methodName));
         return scannedMethod;
@@ -77,7 +77,7 @@ public class ScannedClassTestData {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName(methodName);
         scannedMethod.setHttpMethod(HttpMethod.PUT);
-        scannedMethod.setPath("put/{id}");
+        scannedMethod.setPath("/put/{id}");
         scannedMethod.setClassToReturn(String.class);
         scannedMethod.setMethod(getMethod(methodName));
         return scannedMethod;
@@ -89,7 +89,7 @@ public class ScannedClassTestData {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName(methodName);
         scannedMethod.setHttpMethod(HttpMethod.PUT);
-        scannedMethod.setPath("put/{id}");
+        scannedMethod.setPath("/put/{id}");
         scannedMethod.setClassToReturn(Something.class);
         scannedMethod.setMethod(getMethod(methodName));
         return scannedMethod;
@@ -99,7 +99,7 @@ public class ScannedClassTestData {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName("deleteSomething");
         scannedMethod.setHttpMethod(HttpMethod.DELETE);
-        scannedMethod.setPath("delete");
+        scannedMethod.setPath("/delete");
         scannedMethod.setClassToReturn(Void.class);
         return scannedMethod;
     }
@@ -108,7 +108,7 @@ public class ScannedClassTestData {
         ScannedMethod scannedMethod = new ScannedMethod();
         scannedMethod.setName("headSomething");
         scannedMethod.setHttpMethod(HttpMethod.HEAD);
-        scannedMethod.setPath("head");
+        scannedMethod.setPath("/head");
         scannedMethod.setClassToReturn(Void.class);
         return scannedMethod;
     }

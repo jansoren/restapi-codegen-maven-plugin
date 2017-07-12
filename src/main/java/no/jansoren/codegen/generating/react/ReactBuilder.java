@@ -56,15 +56,22 @@ public class ReactBuilder {
             String name = scannedMethod.getName();
             String params = getMethodParamNames(scannedMethod.getMethod());
             String path = getPath(scannedMethod);
-            String httpMethod = scannedMethod.getHttpMethod().toLowerCase();
+            String httpMethod = getHttpMethod(scannedMethod);
             String dataToPostName = getDataToPostName(scannedMethod);
-            lines.add("export const " + name + " = " + params + " => axios." + httpMethod + "(`${hostname}/" + path + "`" + dataToPostName +");");
+            lines.add("export const " + name + " = " + params + " => axios." + httpMethod + "(`${hostname}" + path + "`" + dataToPostName +");");
         }
         return this;
     }
 
+    private String getHttpMethod(ScannedMethod scannedMethod) {
+        if(scannedMethod.getHttpMethod() != null) {
+            return scannedMethod.getHttpMethod().toLowerCase();
+        }
+        return "";
+    }
+
     private String getPath(ScannedMethod scannedMethod) {
-        return scannedMethod.getPath().replace("{", "${");
+        return scannedMethod.getPath().replace("{", "${").replace("//", "/");
     }
 
     private String getMethodParamNames(Method method) {
