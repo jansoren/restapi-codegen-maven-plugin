@@ -1,7 +1,7 @@
 package no.jansoren.codegen.generating;
 
 import com.squareup.javapoet.*;
-import no.jansoren.codegen.mappers.ParameterSpecMapper;
+import no.jansoren.codegen.mappers.ParameterSpecListMapper;
 import no.jansoren.codegen.scanning.ScannedClass;
 import no.jansoren.codegen.scanning.ScannedMethod;
 
@@ -24,8 +24,7 @@ public class JavaCodeGenerator {
 
     public static void generate(List<ScannedClass> scannedClasses, String generatedCodeFolder, String generatedCodePackage, String rootHost) {
         for (ScannedClass scannedClass : scannedClasses) {
-
-            TypeSpec serviceClass = TypeSpec.classBuilder(scannedClass.getName().replaceAll("Resource", "").concat("Service"))
+            TypeSpec serviceClass = TypeSpec.classBuilder(getFilename(scannedClass))
                     .addField(createWebTargetField())
                     .addMethod(createConstructor(rootHost, scannedClass.getPath()))
                     .addModifiers(Modifier.PUBLIC)
@@ -40,6 +39,10 @@ public class JavaCodeGenerator {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private static String getFilename(ScannedClass scannedClass) {
+        return scannedClass.getName().replaceAll("Resource", "").concat("Service");
     }
 
     private static FieldSpec createWebTargetField() {
@@ -82,7 +85,7 @@ public class JavaCodeGenerator {
                     .addModifiers(Modifier.PUBLIC)
                     .build();
         } else if(HttpMethod.POST.equals(scannedMethod.getHttpMethod())) {
-            List<ParameterSpec> parameterSpecs = ParameterSpecMapper.map(scannedMethod.getMethod());
+            List<ParameterSpec> parameterSpecs = ParameterSpecListMapper.map(scannedMethod.getMethod());
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .addParameters(parameterSpecs)
                     .returns(scannedMethod.getClassToReturn())
@@ -94,7 +97,7 @@ public class JavaCodeGenerator {
                     .addModifiers(Modifier.PUBLIC)
                     .build();
         } else if(HttpMethod.PUT.equals(scannedMethod.getHttpMethod())) {
-            List<ParameterSpec> parameterSpecs = ParameterSpecMapper.map(scannedMethod.getMethod());
+            List<ParameterSpec> parameterSpecs = ParameterSpecListMapper.map(scannedMethod.getMethod());
             return MethodSpec.methodBuilder(scannedMethod.getName())
                     .addParameters(parameterSpecs)
                     .returns(scannedMethod.getClassToReturn())

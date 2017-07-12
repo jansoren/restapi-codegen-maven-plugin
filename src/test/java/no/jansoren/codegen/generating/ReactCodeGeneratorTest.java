@@ -4,16 +4,16 @@ import no.jansoren.codegen.scanning.ScannedClass;
 import no.jansoren.codegen.testdata.ScannedClassTestData;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
-public class JavaCodeGeneratorTest {
+public class ReactCodeGeneratorTest {
 
     @Test
-    public void testGenerateJavaCode() {
-        String generatedJavaCodeFolder = "src/test/java";
-        String generatedJavaCodePackage = "com.example.helloworld";
+    public void testGenerateReactCode() throws IOException {
+        String generatedReactCodeFolder = "src/test/java/com/example/helloworld";
         List<ScannedClass> scannedClasses = ScannedClassTestData.createScannedClasses();
         String rootHost = "https://localhost:1234";
-        JavaCodeGenerator.generate(scannedClasses, generatedJavaCodeFolder, generatedJavaCodePackage, rootHost);
+        ReactCodeGenerator.generate(scannedClasses, generatedReactCodeFolder, rootHost);
     }
 }
