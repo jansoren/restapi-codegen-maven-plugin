@@ -1,9 +1,11 @@
 package no.jansoren.codegen.scanning;
 
 import com.google.common.collect.Lists;
+import no.jansoren.codegen.utils.MethodUtil;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
+import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
@@ -14,7 +16,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+
+import static org.reflections.ReflectionUtils.withAnnotation;
 
 public class ResourcesScanner {
 
@@ -96,8 +102,9 @@ public class ResourcesScanner {
     }
 
     private static List<ScannedMethod> scanMethods(Class<?> scannedResourceClass) {
-        List<ScannedMethod> scannedMethods = new ArrayList<>();
-        for(Method scannedMethod : scannedResourceClass.getDeclaredMethods()) {
+        Set<Method> allMethods = ReflectionUtils.getAllMethods(scannedResourceClass, withAnnotation(Path.class));
+        List<ScannedMethod> scannedMethods = new LinkedList<>();
+        for(Method scannedMethod : allMethods) {
             scannedMethods.add(createScannedMethod(scannedResourceClass, scannedMethod));
         }
         return scannedMethods;

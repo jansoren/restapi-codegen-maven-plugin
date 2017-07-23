@@ -2,6 +2,8 @@ package no.jansoren.codegen;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.rmi.server.UID;
+import java.util.UUID;
 
 @Path("/something")
 @Produces(MediaType.APPLICATION_JSON)
@@ -16,6 +18,7 @@ public class TestResource {
     @POST
     @Path("/add")
     public Something addSomething(Something something) {
+        something.setId(createId());
         return something;
     }
 
@@ -41,5 +44,9 @@ public class TestResource {
     @Path("/put/{id}")
     public String putSomething3(@PathParam("id") String id, int count) {
         return id;
+    }
+
+    private String createId() {
+        return UUID.randomUUID().toString();
     }
 }
