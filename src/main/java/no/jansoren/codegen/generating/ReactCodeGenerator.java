@@ -21,7 +21,7 @@ public class ReactCodeGenerator {
                     .addEslintDisable("max-len")
                     .addImport("axios", "axios")
                     .addNewLine()
-                    .addConst("hostname", rootHost)
+                    .addConst("hostname", rootHost + scannedClass.getPath())
                     .addNewLine()
                     .addConstructors(getConstructors(scannedMethods))
                     .addNewLine()

@@ -1,7 +1,7 @@
 /* eslint-disable max-len*/
 import axios from 'axios';
 
-const hostname = 'https://localhost:1234';
+const hostname = 'https://localhost:1234/something';
 
 export const Something = (id, name, number) => ({ id, name, number });
 
