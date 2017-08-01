@@ -27,21 +27,12 @@ public class ReactCodeGenerator {
                     .addNewLine()
                     .addServices(scannedMethods)
                     .build();
-            /**
-
-            export const getSomething = () => axios.get(`${hostname}/something`);
-            export const getSomething2 = id => axios.get(`${hostname}/something/${id}`);
-            export const putSomething = something => axios.put(`${hostname}/something`, something);
-            export const putSomething2 = (id, something) => axios.put(`${hostname}/something/${id}`, something);
-             */
-
             Path file = Paths.get(generatedReactCodeFolder + "/" + getFilename(scannedClass));
             try {
                 Files.write(file, lines, Charset.forName("UTF-8"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 
@@ -62,7 +53,10 @@ public class ReactCodeGenerator {
     }
 
     private static boolean isComplexObject(Class<?> clazz) {
-        return clazz != String.class && clazz != int.class && clazz != long.class;
+        return clazz != String.class
+                && clazz != int.class
+                && clazz != long.class
+                && clazz != List.class;
     }
 
     private static String getFilename(ScannedClass scannedClass) {
