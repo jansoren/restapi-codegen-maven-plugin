@@ -23,7 +23,7 @@ public class ReactBuilder {
     }
 
     public ReactBuilder addEslintDisable(String s) {
-        lines.add("/* eslint-disable " + s + "*/");
+        lines.add("/* eslint-disable " + s + " */");
         return this;
     }
 
@@ -117,8 +117,14 @@ public class ReactBuilder {
     private String getDataToPostName(ScannedMethod scannedMethod) {
         String httpMethod = scannedMethod.getHttpMethod();
         Method method = scannedMethod.getMethod();
+
         if(httpMethod == "POST" || httpMethod == "PUT") {
-            return ", " + method.getParameterTypes()[method.getParameterCount()-1].getSimpleName().toLowerCase();
+            for(int i=0; i<method.getParameterCount(); i++) {
+                Annotation[] annotations = method.getParameterAnnotations()[i];
+                if(!MethodUtil.isPathParam(annotations)) {
+                    return ", " + method.getParameterTypes()[method.getParameterCount()-1].getSimpleName().toLowerCase();
+                }
+            }
         }
         return "";
     }

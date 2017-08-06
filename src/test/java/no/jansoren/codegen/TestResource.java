@@ -46,6 +46,12 @@ public class TestResource {
         return id;
     }
 
+    @PUT
+    @Path("/put/{id}")
+    public String putSomething4(@PathParam("id") String id) {
+        return id;
+    }
+
     private String createId() {
         return UUID.randomUUID().toString();
     }

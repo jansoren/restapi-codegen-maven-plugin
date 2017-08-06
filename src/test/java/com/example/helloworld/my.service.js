@@ -1,4 +1,4 @@
-/* eslint-disable max-len*/
+/* eslint-disable max-len */
 import axios from 'axios';
 
 const hostname = 'https://localhost:1234/something';
@@ -10,5 +10,6 @@ export const addSomething = something => axios.post(`${hostname}/add`, something
 export const putSomething = something => axios.put(`${hostname}/put`, something);
 export const putSomething2 = (id, something) => axios.put(`${hostname}/put/${id}`, something);
 export const putSomething3 = (id, int) => axios.put(`${hostname}/put/${id}`, int);
+export const putSomething4 = id => axios.put(`${hostname}/put/${id}`);
 export const deleteSomething = () => axios.delete(`${hostname}/delete`);
 export const headSomething = () => axios.head(`${hostname}/head`);

@@ -47,4 +47,9 @@ public class MyService {
     Response response = target.path("/put/" + id + "").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(intParam, MediaType.APPLICATION_JSON_TYPE));
     return response.readEntity(Something.class);
   }
+
+  public String putSomething4(String id) {
+    Response response = target.path("/put/" + id + "").request(MediaType.APPLICATION_JSON_TYPE).put(Entity.entity(id, MediaType.APPLICATION_JSON_TYPE));
+    return response.readEntity(String.class);
+  }
 }

@@ -25,6 +25,7 @@ public class ScannedClassTestData {
         scannedMethods.add(createScannedMethodsPut());
         scannedMethods.add(createScannedMethodsPutWithAnnotatedPathParam());
         scannedMethods.add(createScannedMethodsPutWithParamInt());
+        scannedMethods.add(createScannedMethodsPutWithoutParam());
         scannedMethods.add(createScannedMethodsDelete());
         scannedMethods.add(createScannedMethodsHead());
         return scannedMethods;
@@ -91,6 +92,18 @@ public class ScannedClassTestData {
         scannedMethod.setHttpMethod(HttpMethod.PUT);
         scannedMethod.setPath("/put/{id}");
         scannedMethod.setClassToReturn(Something.class);
+        scannedMethod.setMethod(getMethod(methodName));
+        return scannedMethod;
+    }
+
+    private static ScannedMethod createScannedMethodsPutWithoutParam() {
+        String methodName = "putSomething4";
+
+        ScannedMethod scannedMethod = new ScannedMethod();
+        scannedMethod.setName(methodName);
+        scannedMethod.setHttpMethod(HttpMethod.PUT);
+        scannedMethod.setPath("/put/{id}");
+        scannedMethod.setClassToReturn(String.class);
         scannedMethod.setMethod(getMethod(methodName));
         return scannedMethod;
     }
