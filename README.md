@@ -13,20 +13,22 @@ If you find the plugin useful please give it a star. Also feel free to create pu
 1. Run `mvn clean install` in your project folder
 1. The plugin will scan your source code and generate code out of your resource classes.
 
-### Plugin example
+### Plugin example for generating Java and React code
 
-- `generatedCodeFolder`: This is the folder where you want your generated code
-- `generatedCodePackage`: This is the package of your generated class files
+- `generatedJavaCodeFolder`: This is the folder where you want your generated Java code
+- `generatedJavaCodePackage`: This is the package of your generated class files
+- `generatedReactCodeFolder`: This is the folder where you want your generated React code
 - `rootHost`: This is the host of your running application
 
 ```maven
 <plugin>
     <groupId>no.jansoren</groupId>
     <artifactId>restapi-codegen-maven-plugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <configuration>
-        <generatedCodeFolder>../server-qtest/src/main/java</generatedCodeFolder>
-        <generatedCodePackage>com.example.qtest.services</generatedCodePackage>
+        <generatedJavaCodeFolder>../server-qtest/src/main/java</generatedJavaCodeFolder>
+        <generatedJavaCodePackage>com.example.qtest.services</generatedJavaCodePackage>
+        <generatedReactCodeFolder>../client/src/services</generatedReactCodeFolder>
         <rootHost>http://localhost:8080</rootHost>
     </configuration>
     <executions>
@@ -45,7 +47,7 @@ If you find the plugin useful please give it a star. Also feel free to create pu
 <dependency>
     <groupId>org.glassfish.jersey.core</groupId>
     <artifactId>jersey-client</artifactId>
-    <version>2.23.2</version>
+    <version>2.25</version>
 </dependency>
 ```
 
@@ -54,13 +56,9 @@ If you are using `MediaType.APPLICATION_JSON_TYPE` you also need this dependency
 <dependency>
     <groupId>org.glassfish.jersey.media</groupId>
     <artifactId>jersey-media-json-jackson</artifactId>
-    <version>2.13.2</version>
+    <version>2.25</version>
 </dependency>
 ```
-
-## Example of generating ReactJS code
-
-Not implemented yet
 
 ## How to get started developing
 
