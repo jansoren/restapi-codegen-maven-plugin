@@ -3,9 +3,9 @@
 Are you sick of always having to implement and maintain the client-side services for reaching your Rest API.
 With the REST API Codegenerator Maven Plugin you are able to automatically generate the client-side code to reach your API.
 
-For now the plugin scans your code for [Jersey](https://jersey.java.net/) resources and generates java code - see example of usage in the [akka-persistence-java-example](https://github.com/jansoren/akka-persistence-java-example)-project. In my next project I will extend the plugin to generate ReactJS code aswell.
+For now the plugin scans your code for [Jersey](https://jersey.java.net/) resources and generates Java and ReactJS code - see example of usage in the [akka-persistence-java-example](https://github.com/jansoren/akka-persistence-java-example)-project. 
 
-If you find the plugin useful please give it a star. Also feel free to create pull requests and extend the plugin to generate for example Ajax, AngularJS or ReactJS code.
+If you find the plugin useful please give it a star. Also feel free to create pull requests and extend the plugin to generate other languages of your liking.
 
 ## How to use the plugin for generating Java code
 
@@ -68,8 +68,9 @@ If you are using `MediaType.APPLICATION_JSON_TYPE` you also need this dependency
 
 ## Why this plugin
 
-Over the years I have created a few REST API's, and I always end up using a lot of time implementing the client-side code for reaching the API's.
-In one of the projects we had a Quality-test application implemented in java that ran tests continuously, something that required updating the client-side code rapidly.
+Over the years I have created a few REST API's, and when implementing the client-side code reaching the API, I feel like wasting time. This code rarely change throughout the application and can easily be generated.
+
+In one of the projects we had a Quality-test application implemented in Java that ran tests continuously, something that required updating the client-side code rapidly.
 With this challenge we ended up creating a lot of the same boilerplate code for each new service we implemented, and it felt like this code should and could be automatically generated.
 
 In the pursuit of finding such a product I ended up creating a plugin to solve my current need. The result became this plugin.
